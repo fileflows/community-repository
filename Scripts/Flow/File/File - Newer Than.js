@@ -3,7 +3,7 @@
  * @uid 8cdce0bf-abf9-4ed0-8d95-93db86c3fb58
  * @description Checks if a file is newer than the specified days 
  * @help Checks if a file is newer than the specified days and if it is will output 1, else will call output 2.
- * @revision 2
+ * @revision 3
  * @param {int} Days The number of days to check how old the file is 
  * @param {bool} UseLastWriteTime If the last write time should be used, otherwise the creation time will be 
  * @output The file is newer than the days specified 
