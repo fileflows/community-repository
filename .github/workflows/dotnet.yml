@@ -11,7 +11,7 @@ jobs:
     steps:
     - uses: actions/checkout@v3
       with:
-        fetch-depth: 0  # needed for switching branches
+        fetch-depth: 0  # Required to switch/create branches
 
     - name: Setup .NET
       uses: actions/setup-dotnet@v2
@@ -24,34 +24,37 @@ jobs:
     - name: Generate Repo
       run: dotnet run --repo
 
-    - name: Save generated file
+    - name: Save generated file(s)
       run: |
         mkdir _generated
-        cp repo.json _generated/
+        cp repo.json _generated/repo.json
 
-    - name: Configure git identity
+    - name: Configure git
       run: |
         git config user.name "Automated"
         git config user.email "auto@auto.test"
 
+    - name: Reset repo to clean state
+      run: |
+        git reset --hard
+        git clean -fd
+
     - name: Switch to 'generated' branch (create if needed)
       run: |
-        if git show-ref --quiet refs/heads/generated; then
-          git switch generated
+        if git ls-remote --exit-code --heads origin generated; then
+          git checkout generated
         else
-          git switch --orphan generated
+          git checkout --orphan generated
           git rm -rf .
         fi
 
-    - name: Restore generated file
+    - name: Restore generated file(s)
       run: cp _generated/repo.json .
-
-    - name: Stage file
-      run: git add repo.json
 
     - name: Commit changes
       run: |
-        git diff --quiet && echo "No changes to commit" || git commit -m "Auto repo.json update"
+        git add repo.json
+        git diff --cached --quiet && echo "No changes to commit" || git commit -m "Auto repo.json update"
 
     - name: Push to generated branch
       run: git push origin HEAD:generated
