@@ -1,9 +1,8 @@
 /**
  * @author lomar6932
  * @uid 4a6fc543-c001-4dbe-9b61-7853f08ef251
- * @name IMDB-Lookup
  * @description MDblist IMDb rating filter with a two-step search-then-fetch process.
- * @revision 1
+ * @revision 2
  * @param {string} ApiKey Your MDblist API key.
  * @param {string} FileType "TV Show" or "Movie".
  * @param {string} Rating Filter e.g. ">8.1", "<7.5", or "7.0-8.5".
