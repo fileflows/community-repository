@@ -6,30 +6,52 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     steps:
     - uses: actions/checkout@v3
+      with:
+        fetch-depth: 0  # Needed for switching branches
+
     - name: Setup .NET
       uses: actions/setup-dotnet@v2
       with:
         dotnet-version: 7.0.x
+
     - name: Restore dependencies
       run: dotnet restore
+
     - name: Generate Repo
       run: dotnet run --repo
-    - name: check for changes
+
+    - name: Check for changes
       run: git status
-    - name: set username
+
+    - name: Set username
       run: git config user.name "Automated"
-    - name: set email
+
+    - name: Set email
       run: git config user.email "auto@auto.test"
-    - name: stage changed files
+
+    - name: Switch to 'generated' branch (create if it doesn't exist)
+      run: |
+        if git show-ref --quiet refs/heads/generated; then
+          git switch generated
+        else
+          git switch --orphan generated
+          git rm -rf .
+        fi
+
+    - name: Copy generated files from main
+      run: |
+        git checkout main -- repo.json
+
+    - name: Stage changed files
       run: git add .
-    - name: commit changed files
-      run: git commit -m "Auto repo.json"
-    - name: fetch from main
-      run: git fetch origin main
-    - name: push code to main
-      run: git push origin HEAD:main
+
+    - name: Commit changed files
+      run: |
+        git diff --quiet && echo "No changes to commit" || git commit -m "Auto repo.json update"
+
+    - name: Push to generated branch
+      run: git push origin HEAD:generated
