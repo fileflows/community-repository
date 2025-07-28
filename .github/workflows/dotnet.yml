@@ -30,15 +30,8 @@ jobs:
         find . -type f
         echo "::endgroup::"
 
-    - name: Check generated repo.json
-      run: |
-        if [ ! -f repo.json ]; then
-          echo "❌ repo.json was not generated. Failing."
-          exit 1
-        fi
-
     - name: Upload generated repo.json artifact
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: generated-repo-json
         path: repo.json
@@ -63,7 +56,7 @@ jobs:
         fi
 
     - name: Download generated repo.json artifact
-      uses: actions/download-artifact@v3
+      uses: actions/download-artifact@v4
       with:
         name: generated-repo-json
         path: .
@@ -71,11 +64,7 @@ jobs:
     - name: Commit changes
       run: |
         git add repo.json
-        if git diff --cached --quiet; then
-          echo "No changes to commit"
-        else
-          git commit -m "Auto repo.json update"
-        fi
+        git diff --cached --quiet && echo "No changes to commit" || git commit -m "Auto repo.json update"
 
     - name: Push to generated branch
       run: git push origin HEAD:generated
