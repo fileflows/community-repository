@@ -11,7 +11,7 @@ jobs:
     steps:
     - uses: actions/checkout@v3
       with:
-        fetch-depth: 0  # Required to switch/create branches
+        fetch-depth: 0
 
     - name: Setup .NET
       uses: actions/setup-dotnet@v2
@@ -24,9 +24,19 @@ jobs:
     - name: Generate Repo
       run: dotnet run --repo
 
+    - name: List files for debugging
+      run: |
+        echo "::group::Generated files"
+        find . -type f
+        echo "::endgroup::"
+
     - name: Save generated file(s)
       run: |
         mkdir _generated
+        if [ ! -f repo.json ]; then
+          echo "❌ repo.json was not generated. Failing."
+          exit 1
+        fi
         cp repo.json _generated/repo.json
 
     - name: Configure git
@@ -49,7 +59,12 @@ jobs:
         fi
 
     - name: Restore generated file(s)
-      run: cp _generated/repo.json .
+      run: |
+        if [ ! -f _generated/repo.json ]; then
+          echo "❌ Backup file not found at _generated/repo.json"
+          exit 1
+        fi
+        cp _generated/repo.json .
 
     - name: Commit changes
       run: |
