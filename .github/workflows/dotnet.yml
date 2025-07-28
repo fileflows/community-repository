@@ -5,69 +5,81 @@ on:
     branches: [ "main" ]
 
 permissions:
-  contents: write
+  contents: read   # No write permission on main branch
 
 jobs:
   build:
     runs-on: ubuntu-latest
+    outputs:
+      artifact-name: generated-repo-json
 
     steps:
-    - uses: actions/checkout@v3
-      with:
-        fetch-depth: 0
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
 
-    - name: Setup .NET
-      uses: actions/setup-dotnet@v2
-      with:
-        dotnet-version: 7.0.x
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v2
+        with:
+          dotnet-version: 7.0.x
 
-    - name: Restore dependencies
-      run: dotnet restore
+      - name: Restore dependencies
+        run: dotnet restore
 
-    - name: Generate Repo
-      run: dotnet run --repo
+      - name: Generate Repo
+        run: dotnet run --repo
 
-    - name: List files for debugging
-      run: |
-        echo "::group::Generated files"
-        find . -type f
-        echo "::endgroup::"
+      - name: List files for debugging
+        run: |
+          echo "::group::Generated files"
+          find . -type f
+          echo "::endgroup::"
 
-    - name: Upload generated repo.json artifact
-      uses: actions/upload-artifact@v4
-      with:
-        name: generated-repo-json
-        path: repo.json
+      - name: Upload generated repo.json artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: generated-repo-json
+          path: repo.json
 
-    - name: Configure git
-      run: |
-        git config user.name "Automated"
-        git config user.email "auto@auto.test"
+  update-generated-branch:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write    # write permission required here to push
+    steps:
+      - name: Checkout 'generated' branch (or create orphan if needed)
+        uses: actions/checkout@v3
+        with:
+          ref: generated
+          fetch-depth: 0
+          # This ensures checkout will fail if branch doesn't exist; handled below
 
-    - name: Reset repo to clean state
-      run: |
-        git reset --hard
-        git clean -fd
-
-    - name: Switch to 'generated' branch (create if needed)
-      run: |
-        if git ls-remote --exit-code --heads origin generated; then
-          git checkout generated
-        else
+      - name: Create 'generated' branch if missing
+        if: failure()
+        run: |
           git checkout --orphan generated
           git rm -rf .
-        fi
+          git commit --allow-empty -m "Initial generated branch commit"
+          git push origin generated
 
-    - name: Download generated repo.json artifact
-      uses: actions/download-artifact@v4
-      with:
-        name: generated-repo-json
-        path: .
+      - name: Download generated repo.json artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: generated-repo-json
+          path: .
 
-    - name: Commit changes
-      run: |
-        git add repo.json
-        git diff --cached --quiet && echo "No changes to commit" || git commit -m "Auto repo.json update"
+      - name: Configure git
+        run: |
+          git config user.name "Automated"
+          git config user.email "auto@auto.test"
 
-    - name: Push to generated branch
-      run: git push origin HEAD:generated
+      - name: Commit changes
+        run: |
+          git add repo.json
+          git diff --cached --quiet && echo "No changes to commit" || git commit -m "Auto repo.json update"
+
+      - name: Push to generated branch
+        env:
+          GITHUB_TOKEN: ${{ secrets.PAT_TOKEN }}
+        run: |
+          git push https://x-access-token:${GITHUB_TOKEN}@github.com/${{ github.repository }} generated
