@@ -9,86 +9,59 @@ permissions:
   contents: read
 
 jobs:
-  build:
+  generate:
     runs-on: ubuntu-latest
-    outputs:
-      artifact-name: generated-repo-json
-
     steps:
-      - name: Checkout main
-        uses: actions/checkout@v3
+      - name: Checkout main branch
+        uses: actions/checkout@v4
         with:
-          fetch-depth: 0
+          ref: main
           path: main
 
       - name: Checkout build branch
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           ref: build
-          fetch-depth: 0
           path: build
 
       - name: Setup .NET
-        uses: actions/setup-dotnet@v2
+        uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: 7.0.x
+          dotnet-version: 8.x
 
-      - name: Restore dependencies
-        working-directory: build
-        run: dotnet restore
-
-      - name: Generate Repo
-        working-directory: build
-        run: dotnet run --repo
-
-      - name: List generated files
-        run: find build -type f
-
-      - name: Upload generated repo.json artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: generated-repo-json
-          path: build/repo.json
-
-  update-generated-branch:
-    needs: build
-    runs-on: ubuntu-latest
-    permissions:
-      contents: write
-
-    steps:
-      - name: Checkout generated branch
-        uses: actions/checkout@v3
-        with:
-          ref: generated
-          fetch-depth: 0
-
-      - name: Create generated branch if it doesn't exist
-        if: failure()
+      - name: Combine main + build into temp folder
         run: |
-          git checkout --orphan generated
-          git rm -rf .
-          git commit --allow-empty -m "Initial generated branch commit"
-          git push origin generated
+          mkdir combined
+          cp -r main/. combined/
+          cp -r build/. combined/
 
-      - name: Download artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: generated-repo-json
-          path: .
-
-      - name: Configure git
+      - name: Restore and build
+        working-directory: combined
         run: |
-          git config user.name "GitHub Actions"
-          git config user.email "actions@github.com"
+          dotnet restore
+          dotnet build --no-restore --configuration Release
 
-      - name: Commit repo.json
+      - name: Run generator
+        working-directory: combined
         run: |
+          dotnet run --configuration Release
+
+      - name: Copy generated repo.json
+        run: |
+          mkdir generated
+          cp combined/repo.json generated/repo.json
+
+      - name: Commit repo.json to generated branch
+        run: |
+          git config --global user.name "GitHub Actions"
+          git config --global user.email "actions@github.com"
+
+          git fetch origin generated || true
+          git checkout -B generated origin/generated || git checkout --orphan generated
+
+          rm -rf *
+          cp generated/repo.json repo.json
+
           git add repo.json
-          git diff --cached --quiet && echo "No changes to commit" || git commit -m "Update repo.json"
-
-      - name: Push to generated branch
-        env:
-          GITHUB_TOKEN: ${{ secrets.PAT_TOKEN }}
-        run: |
-          git push https://x-access-token:${GITHUB_TOKEN}@github.com/${{ github.repository }} generated
+          git commit -m "Update generated repo.json" || echo "No changes to commit"
+          git push origin generated --force
