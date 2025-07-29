@@ -24,6 +24,12 @@ jobs:
           ref: build
           path: build
 
+      - name: Checkout generated branch
+        uses: actions/checkout@v4
+        with:
+          ref: generated
+          path: generated
+
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
@@ -52,15 +58,10 @@ jobs:
           cp combined/repo.json generated/repo.json
 
       - name: Commit repo.json to generated branch
+        working-directory: generated
         run: |
-          git config --global user.name "GitHub Actions"
-          git config --global user.email "actions@github.com"
-
-          git fetch origin generated || true
-          git checkout -B generated origin/generated || git checkout --orphan generated
-
-          rm -rf *
-          cp generated/repo.json repo.json
+          git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
 
           git add repo.json
           git commit -m "Update generated repo.json" || echo "No changes to commit"
