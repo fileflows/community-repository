@@ -51,10 +51,6 @@ jobs:
         working-directory: combined
         run: |
           dotnet run --configuration Release
-
-      - name: Copy generated repo.json
-        run: |
-          mkdir generated
           cp combined/repo.json generated/repo.json
 
       - name: Commit repo.json to generated branch
