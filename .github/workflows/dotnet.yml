@@ -2,7 +2,8 @@ name: Generate Repo
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "main", "build" ]
+  workflow_dispatch:
 
 permissions:
   contents: read
