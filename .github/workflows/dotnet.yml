@@ -5,7 +5,7 @@ on:
     branches: [ "main" ]
 
 permissions:
-  contents: read   # No write permission on main branch
+  contents: read
 
 jobs:
   build:
@@ -14,9 +14,18 @@ jobs:
       artifact-name: generated-repo-json
 
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout main
+        uses: actions/checkout@v3
         with:
           fetch-depth: 0
+          path: main
+
+      - name: Checkout build branch
+        uses: actions/checkout@v3
+        with:
+          ref: build
+          fetch-depth: 0
+          path: build
 
       - name: Setup .NET
         uses: actions/setup-dotnet@v2
@@ -24,37 +33,36 @@ jobs:
           dotnet-version: 7.0.x
 
       - name: Restore dependencies
+        working-directory: build
         run: dotnet restore
 
       - name: Generate Repo
+        working-directory: build
         run: dotnet run --repo
 
-      - name: List files for debugging
-        run: |
-          echo "::group::Generated files"
-          find . -type f
-          echo "::endgroup::"
+      - name: List generated files
+        run: find build -type f
 
       - name: Upload generated repo.json artifact
         uses: actions/upload-artifact@v4
         with:
           name: generated-repo-json
-          path: repo.json
+          path: build/repo.json
 
   update-generated-branch:
     needs: build
     runs-on: ubuntu-latest
     permissions:
-      contents: write    # write permission required here to push
+      contents: write
+
     steps:
-      - name: Checkout 'generated' branch (or create orphan if needed)
+      - name: Checkout generated branch
         uses: actions/checkout@v3
         with:
           ref: generated
           fetch-depth: 0
-          # This ensures checkout will fail if branch doesn't exist; handled below
 
-      - name: Create 'generated' branch if missing
+      - name: Create generated branch if it doesn't exist
         if: failure()
         run: |
           git checkout --orphan generated
@@ -62,7 +70,7 @@ jobs:
           git commit --allow-empty -m "Initial generated branch commit"
           git push origin generated
 
-      - name: Download generated repo.json artifact
+      - name: Download artifact
         uses: actions/download-artifact@v4
         with:
           name: generated-repo-json
@@ -70,13 +78,13 @@ jobs:
 
       - name: Configure git
         run: |
-          git config user.name "Automated"
-          git config user.email "auto@auto.test"
+          git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
 
-      - name: Commit changes
+      - name: Commit repo.json
         run: |
           git add repo.json
-          git diff --cached --quiet && echo "No changes to commit" || git commit -m "Auto repo.json update"
+          git diff --cached --quiet && echo "No changes to commit" || git commit -m "Update repo.json"
 
       - name: Push to generated branch
         env:
