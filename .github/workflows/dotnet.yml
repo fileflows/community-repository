@@ -1,0 +1,64 @@
+name: Generate Repo
+
+on:
+  push:
+    branches: [ "main", "build" ]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout main branch
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          path: main
+
+      - name: Checkout build branch
+        uses: actions/checkout@v4
+        with:
+          ref: build
+          path: build
+
+      - name: Checkout generated branch
+        uses: actions/checkout@v4
+        with:
+          ref: generated
+          path: generated
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 7.0.x
+
+      - name: Combine main + build into temp folder
+        run: |
+          mkdir combined
+          cp -r main/. combined/
+          cp -r build/. combined/
+
+      - name: Restore and build
+        working-directory: combined
+        run: |
+          dotnet restore
+          dotnet build --no-restore --configuration Release
+
+      - name: Run generator
+        working-directory: combined
+        run: |
+          dotnet run --configuration Release
+          cp repo.json ../generated/repo.json
+
+      - name: Commit repo.json to generated branch
+        working-directory: generated
+        run: |
+          git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
+
+          git add repo.json
+          git commit -m "Update generated repo.json" || echo "No changes to commit"
+          git push origin generated --force
