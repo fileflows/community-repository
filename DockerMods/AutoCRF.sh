@@ -1,14 +1,14 @@
 # ----------------------------------------------------------------------------------------------------
-# Name: AutoCRF
+# Name: ab-av1
 # Author: lawrence
 # Description: This DockerMod installs ab-av1 and a FFmpeg wrapper script, it requires both FFmpeg FileFlows Edition installed (you may have to uninstall other FFmpegs)
-# Revision: 6
+# Revision: 7
 # Icon: fas fa-compress-alt
 # ----------------------------------------------------------------------------------------------------
 
 #!/bin/bash
 
-DESTINATION_FOLDER="/app/common/autocrf"
+DESTINATION_FOLDER="/app/common/ab-av1"
 
 # Function to handle errors
 function handle_error {
@@ -25,7 +25,7 @@ if [ "$1" == "--uninstall" ]; then
         handle_error
     fi
     if rm -rf ${DESTINATION_FOLDER}; then
-        echo "auto crf successfully uninstalled."
+        echo "av-av1 successfully uninstalled."
         exit 0
     else
         handle_error
@@ -36,7 +36,7 @@ fi
 ! lspci | grep -Ei 'VGA|Display' | grep Intel || ! apt-get -qq update || ! apt-get install -yqq libmfx-gen1.2 libmfx-dev i965-va-driver-shaders intel-media-va-driver-non-free intel-opencl-icd
 
 if [ -f ${DESTINATION_FOLDER}/ab-av1 ]; then
-    echo "AutoCRF already installed."
+    echo "ab-av1 already installed."
     exit 0
 fi
 
@@ -61,15 +61,19 @@ chmod 777 ${DESTINATION_FOLDER}/cache
 cat > ${DESTINATION_FOLDER}/ffmpeg <<EOF
 #!/bin/bash
 
-if [[ "\$@" =~ libvmaf|libsvtav1|libaom-av1 ]]; then
-    if [ -e /opt/ffmpeg-uranite-static/bin/ffmpeg ]; then
-        /opt/ffmpeg-uranite-static/bin/ffmpeg "\$@"
-    else
-        /app/common/ffmpeg-static/ffmpeg "\$@"
-    fi
+if [ -e /usr/lib/ffmpeg-fileflows-edition/ffmpeg ]; then
+    /usr/lib/ffmpeg-fileflows-edition/ffmpeg "\$@"
 else
-    if [ -e /usr/local/bin/ffmpeg ]; then
-        /usr/local/bin/ffmpeg "\$@"
+    if [[ "\$@" =~ libvmaf|libsvtav1|xpsnr|libaom-av1 ]]; then
+        if [ -e /opt/ffmpeg-uranite-static/bin/ffmpeg ]; then
+            /opt/ffmpeg-uranite-static/bin/ffmpeg "\$@"
+        else
+            /app/common/ffmpeg-static/ffmpeg "\$@"
+        fi
+    else
+        if [ -e /usr/local/bin/ffmpeg ]; then
+            /usr/local/bin/ffmpeg "\$@"
+        fi
     fi
 fi
 
