@@ -5,12 +5,13 @@ Important: This script was made to be ran with the docker version of FileFlows. 
 If CRF is found, it is saved to Variables.AbAv1CRFValue.
 Executes the ab-av1 command.
  * @author CanofSocks
+ * @revision 10
  * @uid e31fbd4d-dc96-4ae6-9122-a9f30c102b1d
- * @revision 9
  * @param {string} Preset The preset to use
  * @param {string} Encoder The target encoder
  * @param {string} EncOptions A '|' separated list of additional options to pass to ab-av1. The first '=' symbol will be used to infer that this is an option with a value. Passed to ffmpeg like "x265-params=lossless=1" -> ['-x265-params', 'lossless=1'] 
  * @param {string} PixFormat The --pix-format argument to pass to AbAv1
+ * @param {bool} Xpsnr Use xpsnr instead of VMAF
  * @param {string} MinVmaf The VMAF value to go for (e.g. 95.0)
  * @param {int} MaxEncodedPercent Maximum percentage of predicted size
  * @param {string} MinCRF The minimum CRF
@@ -21,16 +22,13 @@ Executes the ab-av1 command.
  * @output No suitable CRF was found
  * @output Suitable CRF was found, saved to Variables.AbAv1CRFValue
  */
-function Script(Preset,Encoder,EncOptions,PixFormat,MinVmaf,MaxEncodedPercent,MinCRF,MaxCRF,MinSamples,Thorough,AdditionalOptions)
+function Script(Preset,Encoder,EncOptions,PixFormat,Xpsnr,MinVmaf,MaxEncodedPercent,MinCRF,MaxCRF,MinSamples,Thorough,AdditionalOptions)
 {
 
-    if (!ToolPath("ab-av1", "/app/common/autocrf")) {
+    if (!ToolPath("ab-av1", "/app/common/ab-av1")) {
         return -1;
     }
-    if (!ToolPath("ffmpeg", "/app/common/autocrf")) {
-        return -1;
-    }
-    if (!ToolPath("ffmpeg", "/app/common/ffmpeg-static")) {
+    if (!ToolPath("ffmpeg", "/app/common/ab-av1")) {
         return -1;
     }
 
@@ -42,7 +40,11 @@ function Script(Preset,Encoder,EncOptions,PixFormat,MinVmaf,MaxEncodedPercent,Mi
         abav1Command += ` --pix-format ${PixFormat}`
     }
     if(MinVmaf){
-        abav1Command += ` --min-vmaf ${MinVmaf}`
+        if(Xpsnr){
+            abav1Command += ` --min-xpsnr ${MinVmaf}`
+        } else {
+            abav1Command += ` --min-vmaf ${MinVmaf}`
+        }
     }
     if(Preset){
         abav1Command += ` --preset ${Preset}`
@@ -103,7 +105,7 @@ function Script(Preset,Encoder,EncOptions,PixFormat,MinVmaf,MaxEncodedPercent,Mi
 // Stolen from lawrence
 function search(abav1Command){
 
-    let abAv1 = ToolPath("ab-av1", "/app/common/autocrf");
+    let abAv1 = ToolPath("ab-av1", "/app/common/ab-av1");
     let path = abAv1.replace(/[^\/]+$/, "");
     abav1Command = `${abAv1} ${abav1Command}`
     var executeArgs = new ExecuteArgs();
@@ -150,13 +152,13 @@ function search(abav1Command){
         }
         if (
             (matches = line.match(
-                /crf ([0-9]+(?:\.[0-9]+)?) VMAF ([0-9.]+) predicted.*\(([0-9.]+)%/i
+                /crf ([0-9]+(?:\.[0-9]+)?) (VMAF|XPSNR) ([0-9.]+) predicted.*\(([0-9.]+)%/i
             ))
         ) {
             returnValue.data.push({
                 crf: matches[1] ? matches[1].trim() : '',
-                score: matches[2] ? matches[2].trim() : '',
-                size: matches[3] ? matches[3].trim() : '',
+                score: matches[3] ? matches[3].trim() : '',
+                size: matches[4] ? matches[4].trim() : '',
             });
         }
         if ((matches = line.match(/crf ([0-9]+(?:\.[0-9]+)?) successful/i))) {
