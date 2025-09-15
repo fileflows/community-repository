@@ -1,10 +1,11 @@
 /**
  * @name Video - AutoCRF
  * @uid d08608d8-3b50-4784-ad68-fd4ed102577c
- * @description Finds the correct CRF using VMAF score based on a
-maximum BitRate and your selected codec types, years of testing and community input
+ * @description Please switch to Video Encode Optimized, this script is no longer maintained
  * @help Put me between 'FFMPEG Builder: Start' and 'FFMPEG Builder: Executor'
-Required DockerMods: AutoCRF, FFmpeg FileFlows Edition
+Required DockerMods: ab-av1, FFmpeg FileFlows Edition
+
+!! Please switch to Video Encode Optimized, this script is no longer maintained !!
 
 ~~~~~~~~~~~~~~~~~ NEW ~~~~~~~~~~~~~~~~~
 !!Please remove FFmpeg Builder Video Manual from output 1, it is no longer required!!
@@ -40,7 +41,7 @@ All parameters can also be overridden using Variables for example
 
 For further help or feature requests find me in the discord
  * @author lawrence
- * @revision 15
+ * @revision 16
  * @param {('hevc_qsv'|'hevc_nvenc'|'hevc'|'av1_qsv'|'libsvtav1'|'av1_nvenc'|'h264_qsv'|'h264'|'h264_nvenc'|'hevc_vaapi')} TargetCodec Which codec you want as the output
  * @param {('hevc'|'h264'|'av1'|'vp9'|'mpeg2'|'mpeg4')[]} FallBackCodecs Video codecs that you are happy to keep if no CRf can be found
  * @param {int} MaxBitRate The maximum acceptable bitrate in MBps
@@ -53,10 +54,10 @@ For further help or feature requests find me in the discord
  */
 function Script() {
     // Checking dependencies
-    if (!ToolPath("ab-av1", "/app/common/autocrf")) {
+    if (!ToolPath("ab-av1", "/app/common/ab-av1")) {
         return -1;
     }
-    let ffmpeg = ToolPath("ffmpeg", "/app/common/autocrf");
+    let ffmpeg = ToolPath("ffmpeg", "/app/common/ab-av1");
     if (!ffmpeg) {
         return -1;
     }
@@ -727,13 +728,13 @@ function ToolPath(tool, path) {
             Logger.ELog("You may need to remove other FFmpeg DockerMods");
             Logger.WLog(`Cannot find ${path}/${tool}`);
             Logger.WLog(
-                "AutoCRF: If you're absolutely sure you installed the DockerMods please restart the node"
+                "AutoCRF: If you're absolutely sure you installed the ab-av1 DockerMod please restart the node"
             );
             Logger.WLog(
                 "AutoCRF: Please remove FFmpeg Builder Video Manual from output 1, it is no longer required"
             );
             Flow.Fail(
-                "AutoCRF: Please also remove FFmpeg Builder Video Manual, Missing required DockerMods: AutoCRF, FFmpeg FileFlows Edition"
+                "AutoCRF: Please also remove FFmpeg Builder Video Manual, Missing required DockerMods: ab-av1, FFmpeg FileFlows Edition"
             );
             return null;
         }
