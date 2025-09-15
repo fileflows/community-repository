@@ -5,6 +5,7 @@
 Find me in the discord for more help
  * @output Shim installed
  * @author lawrence
+ * @revision 1
  * @uid 06590025-5496-4db8-987b-b52c6a8959c2
  */
 function Script() {
