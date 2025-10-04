@@ -13,7 +13,6 @@ set -e
 # Constants
 FFMPEG_DIR="/usr/lib/ffmpeg-fileflows-edition"
 FFMPEG_LINK=/usr/local/bin/ffmpeg
-FFMPEG_CUDA_DIR="/app/common/ffmpeg-fileflows-edition-cuda"
 FFMPEG_VERSION=7.1.2-alpha1
 FFMPEG_TARGET="noble"
 
