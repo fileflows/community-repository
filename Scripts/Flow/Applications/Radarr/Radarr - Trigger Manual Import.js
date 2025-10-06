@@ -7,7 +7,7 @@ import { Radarr } from 'Shared/Radarr';
  * @help Performs Radarr import to the Movie
  * Run last after file move.
  * @author iBuSH
- * @revision 7
+ * @revision 8
  * @param {string} URL Radarr root URL and port (e.g. http://radarr:7878).
  * @param {string} ApiKey Radarr API Key.
  * @param {string} ImportPath The output path for import triggering (default Working File).
