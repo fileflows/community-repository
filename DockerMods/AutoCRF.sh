@@ -2,7 +2,7 @@
 # Name: ab-av1
 # Author: lawrence
 # Description: This DockerMod installs ab-av1 and a FFmpeg wrapper script, it requires both FFmpeg FileFlows Edition installed (you may have to uninstall other FFmpegs)
-# Revision: 7
+# Revision: 8
 # Icon: fas fa-compress-alt
 # ----------------------------------------------------------------------------------------------------
 
@@ -61,19 +61,17 @@ chmod 777 ${DESTINATION_FOLDER}/cache
 cat > ${DESTINATION_FOLDER}/ffmpeg <<EOF
 #!/bin/bash
 
-if [ -e /usr/lib/ffmpeg-fileflows-edition/ffmpeg ]; then
-    /usr/lib/ffmpeg-fileflows-edition/ffmpeg "\$@"
-else
-    if [[ "\$@" =~ libvmaf|libsvtav1|xpsnr|libaom-av1 ]]; then
-        if [ -e /opt/ffmpeg-uranite-static/bin/ffmpeg ]; then
-            /opt/ffmpeg-uranite-static/bin/ffmpeg "\$@"
-        else
-            /app/common/ffmpeg-static/ffmpeg "\$@"
-        fi
+if [[ "\$@" =~ libvmaf|libsvtav1|xpsnr|libaom-av1 ]]; then
+    if [ -e /app/common/ffmpeg-fileflows-edition/vmaf_cuda.sh ]; then
+        /app/common/ffmpeg-fileflows-edition/vmaf_cuda.sh "\$@"
+    elif [ -e /opt/ffmpeg-uranite-static/bin/ffmpeg ]; then
+        /opt/ffmpeg-uranite-static/bin/ffmpeg "\$@"
     else
-        if [ -e /usr/local/bin/ffmpeg ]; then
-            /usr/local/bin/ffmpeg "\$@"
-        fi
+        /app/common/ffmpeg-static/ffmpeg "\$@"
+    fi
+else
+    if [ -e /usr/local/bin/ffmpeg ]; then
+        /usr/local/bin/ffmpeg "\$@"
     fi
 fi
 
