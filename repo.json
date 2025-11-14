@@ -493,6 +493,13 @@
       "MinimumVersion": "24.08.1.3441"
     },
     {
+      "Path": "Scripts/Function/Video/Video - Audio Bitrate Matches.js",
+      "Name": "Video - Audio Bitrate Matches",
+      "Description": "Checks if a video file\u0027s audio bitrate matches an input kbps.\n/",
+      "Revision": 5,
+      "Uid": "7fedd272-ebbc-47e2-8140-dcb23aa90661"
+    },
+    {
       "Path": "Scripts/Function/Video/Video - Bitrate Greater Than.js",
       "Name": "Video - Bitrate Greater Than",
       "Description": "/**\nChecks if a video files bitrate is greater than a specific bitrate\n/",
