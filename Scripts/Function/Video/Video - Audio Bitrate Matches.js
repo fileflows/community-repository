@@ -3,7 +3,8 @@
  * @help Enter a Kbps number below. Select which audio tracks you want to test with the dropdown. Select the operand to use in the test. If you selected "Specified track" enter the Audio track in the Input Audio Track box.
  * @author hag
  * @uid 7fedd272-ebbc-47e2-8140-dcb23aa90661
- * @revision 4
+ * @revision 5
+ * @outputs 3
  * @param {int} InputBitrateKbps Kbps input value. Integers only.
  * @param {('Any'|'All'|'Specified track')} TracksAnalysed Which track(s) of audio in the video file to test.
  * @param {('Equals'|'Greater Than'|'Less Than'|'Greater Than or Equal To'|'Less Than or Equal To'|'Not Equals')} Operand The operand to use in the test.
