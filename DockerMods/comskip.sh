@@ -1,7 +1,7 @@
 # ----------------------------------------------------------------------------------------------------
 # Name: comskip
 # Description: Comskip is a application used for commercial detection in video files. It analyzes MPEG or H.264 files and generates output files containing the location of commercials.
-# Author: reven
+# Author: FileFlows
 # Revision: 4
 # Default: true
 # Icon: fas fa-tv:#DA70D6

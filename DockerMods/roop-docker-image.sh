@@ -1,7 +1,7 @@
 # ----------------------------------------------------------------------------------------------------
 # Name: roop-docker-image
 # Description: Creates a Docker image `roop` that can be deployed in a flow to swap faces in images or videos.
-# Author: reven
+# Author: FileFlows
 # Revision: 2
 # Icon: fas fa-smile:#1178A0
 # ----------------------------------------------------------------------------------------------------
