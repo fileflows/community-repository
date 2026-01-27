@@ -393,6 +393,13 @@
       "Uid": "df4df16f-510e-49b8-a941-447e4f8beff7"
     },
     {
+      "Path": "Scripts/Flow/Applications/Sonarr/Sonarr - Rename.js",
+      "Name": "Sonarr - Rename",
+      "Description": "This script will send a rename command to Sonarr\n/",
+      "Revision": 4,
+      "Uid": "23221948-1b70-4748-a895-dfc93325c970"
+    },
+    {
       "Path": "Scripts/Flow/Applications/Sonarr/Sonarr - Refresh.js",
       "Name": "Sonarr - Refresh",
       "Description": "This script will refresh the file through Sonarr for processing libraries in place\n/",
