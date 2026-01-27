@@ -2,6 +2,7 @@ import { Sonarr } from 'Shared/Sonarr';
 
 /**
  * @name Sonarr - Rename
+ * @uid 23221948-1b70-4748-a895-dfc93325c970
  * @description This script will send a rename command to Sonarr
  * @author rexis-veritas
  * @revision 4
