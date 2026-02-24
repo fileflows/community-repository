@@ -1,5 +1,7 @@
 /**
  * @name Manga-Extract
+ * @revision 1
+ * @uid e1f57e27-83b6-4b4f-8f9b-cfad22750cca
  * @description Manga-Extract
 - Extracts CBZ into /tmp/...
 - Creates work dir
