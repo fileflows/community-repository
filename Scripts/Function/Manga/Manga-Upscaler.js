@@ -26,6 +26,7 @@ FIXES:
  * @param {bool} StripMeta Remove metadata (default true)
  * @param {int} PerPageTimeoutSec timeout per page upscale (seconds). Default 240.
  * @param {int} MinBytesReject If output file smaller than this, treat as broken & fallback. Default 20000 (20KB).
+ * @outputs 2
  * @output Success
  * @output Failure
  */

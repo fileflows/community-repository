@@ -3,6 +3,7 @@
  * @description Manga-Metadata-Initial (FIXED)
 Prefers ComicInfo.xml <Series> for series_title; falls back to parent folder.
 Extracts XML via stdout to avoid disk writes.
+ * @outputs 2
  * @output 1 Success
  * @output 2 Failure
  */

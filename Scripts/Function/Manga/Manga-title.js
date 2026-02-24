@@ -6,6 +6,7 @@ Fix: handles titles like "Vol.11 Ch.56.5 - Extra" by stripping vol/ch wrappers t
 Outputs:
 1 = Success
 2 = Failure
+ * @outputs 2
  * @output 1 (Success)
  * @output 2 (Failure)
  */

@@ -1,6 +1,7 @@
 /**
  * @name Manga-Repack
  * @description Manga-Repack (FIXED WRAPPING)
+ * @outputs 2
  * @output Success
  * @output Failure
  */

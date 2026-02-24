@@ -11,6 +11,7 @@
 - Adds unzip timeout to prevent zombie hangs
  * @param {int} UnzipTimeoutSec Timeout for unzip (seconds). Default 1800 (30 min).
  * @param {bool} FailIfNoImages If true, fail when no images found. Default true.
+ * @outputs 2
  * @output Success
  * @output Failure
  */
