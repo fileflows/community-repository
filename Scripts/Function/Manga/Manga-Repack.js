@@ -1,5 +1,7 @@
 /**
  * @name Manga-Repack
+ * @uid c8e18532-5bf5-4db5-b2f4-d04c7554e146
+ * @revision 1
  * @description Manga-Repack (FIXED WRAPPING)
  * @outputs 2
  * @output Success

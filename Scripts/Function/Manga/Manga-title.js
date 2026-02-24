@@ -1,5 +1,7 @@
 /**
  * @name Manga-title
+ * @revision 1
+ * @uid a1688ec7-70a1-4f46-989c-a48cbcfb2032
  * @description Manga Chapter Renamer Helper V2.1 (MINIMAL PATCH) -> sets clean_ch_name
 Fix: handles titles like "Vol.11 Ch.56.5 - Extra" by stripping vol/ch wrappers to get "Extra"
 

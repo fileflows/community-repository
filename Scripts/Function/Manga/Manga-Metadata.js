@@ -1,5 +1,7 @@
 /**
  * @name Manga-Metadata
+ * @uid 8621cda6-d99e-4cf7-9587-6f6e98deb076
+ * @revision 1
  * @description Manga-Metadata-Initial (FIXED)
 Prefers ComicInfo.xml <Series> for series_title; falls back to parent folder.
 Extracts XML via stdout to avoid disk writes.

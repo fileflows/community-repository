@@ -1,5 +1,7 @@
 /**
  * @name Manga-Upscaler
+ * @revision 1
+ * @uid e73709cb-c550-40a1-b644-beb2d8ac8300
  * @description Manga-Upscale
 Purely: upscale + recompress. No extracting, no repackaging, no delete/replace.
 
