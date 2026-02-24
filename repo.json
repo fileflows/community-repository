@@ -554,6 +554,41 @@
       "Description": "/**\nAdds a downscale filter to FFMPEG Builder any file greater than 1080p\n/",
       "Revision": 2,
       "MinimumVersion": "1.0.0.0"
+    },
+    {
+      "Path": "Scripts/Function/Manga/Manga-Extract.js",
+      "Name": "Manga-Extract",
+      "Description": "Manga-Extract\n- Extracts CBZ into /tmp/...\n- Creates work dir\n- Sets Variables:\n- series.title\n- manga.baseTemp, manga.extractDir, manga.workDir, manga.inputCbz, manga.pageList, manga.pagesTotal\n- Adds unzip timeout to prevent zombie hangs\n/",
+      "Revision": 1,
+      "Uid": "e1f57e27-83b6-4b4f-8f9b-cfad22750cca"
+    },
+    {
+      "Path": "Scripts/Function/Manga/Manga-title.js",
+      "Name": "Manga-title",
+      "Description": "Manga Chapter Renamer Helper V2.1 (MINIMAL PATCH) -\u003E sets clean_ch_name\nFix: handles titles like \u0022Vol.11 Ch.56.5 - Extra\u0022 by stripping vol/ch wrappers to get \u0022Extra\u0022\n\nOutputs:\n1 = Success\n2 = Failure\n/",
+      "Revision": 1,
+      "Uid": "a1688ec7-70a1-4f46-989c-a48cbcfb2032"
+    },
+    {
+      "Path": "Scripts/Function/Manga/Manga-Upscaler.js",
+      "Name": "Manga-Upscaler",
+      "Description": "Manga-Upscale\nPurely: upscale \u002B recompress. No extracting, no repackaging, no delete/replace.\n\nReads Variables from Manga-Extract:\n- manga.extractDir, manga.workDir, manga.pageList\n\nFIXES:\n(4) Zombie hangs: uses timeout for each upscaler call (if \u0060timeout\u0060 exists).\n(5) 5KB/broken pages: validates outputs; if convert blocked, tries ffmpeg/cwebp; if still blocked, keeps PNG; if output tiny/invalid, fallback to original.\n\n/",
+      "Revision": 1,
+      "Uid": "e73709cb-c550-40a1-b644-beb2d8ac8300"
+    },
+    {
+      "Path": "Scripts/Function/Manga/Manga-Repack.js",
+      "Name": "Manga-Repack",
+      "Description": "Manga-Repack (FIXED WRAPPING)\n/",
+      "Revision": 1,
+      "Uid": "c8e18532-5bf5-4db5-b2f4-d04c7554e146"
+    },
+    {
+      "Path": "Scripts/Function/Manga/Manga-Metadata.js",
+      "Name": "Manga-Metadata",
+      "Description": "Manga-Metadata-Initial (FIXED)\nPrefers ComicInfo.xml \u003CSeries\u003E for series_title; falls back to parent folder.\nExtracts XML via stdout to avoid disk writes.\n/",
+      "Revision": 1,
+      "Uid": "8621cda6-d99e-4cf7-9587-6f6e98deb076"
     }
   ],
   "WebhookScripts": [
@@ -603,6 +638,13 @@
       "Revision": 4,
       "Author": "FileFlows",
       "Icon": "fab fa-git-alt:#FF4500"
+    },
+    {
+      "Path": "DockerMods/MangaUpscaler.sh",
+      "Name": "MangaUpscaler",
+      "Description": "This DockerMod installs and configures two of the most powerful NCNN Vulkan-based upscaling engines\u2014Real-ESRGAN and Waifu2x\u2014specifically optimized for manga, anime, and illustration processing.",
+      "Revision": 2,
+      "Icon": "data:image/webp;base64,UklGRqwKAABXRUJQVlA4IKAKAADwPgCdASrwAPAAPkEejkQioaGSmnVwKAQEpu/HyYLr0E762/vdhF7L\u002BLX46dmTv33O/dL/Idc6enqz\u002B5fmD/W/m//jP8B\u002BAHyq8wD9GP7b9oHcg8wn8Z/2P\u002B9/y3vSdIB\u002B1/WQf27/j\u002BwB\u002Bt/pgf9j\u002B6fBn/I/9D/1P\u002Bz\u002B////\u002BjX/C/9T/oZ65/Y\u002BrJwpPKFZW/YPYv2L7UP9V3mzjX9F/VXkQ7C/2K7yL6l6gH8j8wzNZ\u002BO/6D2CP43/ZP\u002BH2APRG/bcl/MplYrfFvi3xb2KX6KLB3kDMaxTxb45vs1ug3wcS0XrwIxYFc56boKppSlrKyyhib8s47iCSADAKDOiUgvvDqxg3p7Kof/6OFUfB5QchNv\u002BQDqpqZvRDGWhODKZgyEs5RfidgsSemCghecG6jdmpYEw7rqJzZJS87/MnLH5DP2AYWlflJDsGLKilkV2S56bKYMWahtQsqvryHN7r/v46FmuaVHYhdW0YfdUOcgs1vgQ0PwrQc5sxdmMsHhunnVxbcuR8DY0WZC3ChObLiOCn\u002BHn34vIhFgU9egdgq3smAXaQGb01Gefw9KjAxDZ8uENcIN4Z2Ye3LD4ss3Fe4Q/6PY9fsRQgINJ\u002BN7jr6iixSJIBn\u002BV/IBcC/moSQA1qR3f1ZMIuzRjIYZoPAd7KYYYMGTRS2Y1ini3xb8FAAD86ZL2tgCx/ya8ml\u002BZB/k15NHyBezroYawXaAAZ4TF/Ofp4oeB7ArpY2DIRjFZrxA9G3AAALUYSzxNbx4KeQqJDl8qlU2X/QFdFWJY4YVR98WeaFQXb3gPVu3Ngc/gfre5iOaouQsXT76e7TIoxR0xb001cWXQLYGoLlUFtTriEp2vaH3V61M3ycvlVxoS08j9PKMCv\u002BSn\u002BC1MrJbqpYPpFsr9BgGlf3hE9V5HgoUMLfyizQV/CpY7YZjC1fUTH/lsje/2uqHOU8j42Q8FUxiseGgFmwePm\u002BCLDPAhDbZKC/1UO8PY3c6f7qmrXkXGQxwYlICAElUogte2X\u002BDX/6qUz/vakfjpH3eHXANCozeFP5iKH9OZcWc89RkrIjh7SR2v\u002B4MyMeGH13h6GwCS//RP6ThMwnraaO0oZz5erOvYsy92Zgwb\u002BhPQ/SM\u002BDpWKWnlv7ndIFKv/i\u002Bok/pF4472LrEiRdOHzXP5/paT1ik3OPRNO4W1AW2byt56u0Dax/O/3fm3rcJNKqOcluB0yGev6EDhyxzeFFkKOdnmJX3d5x9egGWV9BgXC7s3l/SV8DR7rgDlKcmN57kZzpzWBqBP2mA9A9PC6lFCWJC8JzMmbhGlEvYNG9M7uHnJKt2S4e3Y98f/QS2EUr909MBxyZJJVEoURVKCNI9NlC4SuBVVPy3Ma7nr1KteXvzJDcB9gYngOqLuIkTcIfdfAHsK2G1qJMUbMRnrRPGZMAYcGzcljn5i7NsQSoqAdn4EEmBbr26o22jFuwvpa3TlGZKfmH\u002ByBzzBrC9r1vgmS1XurQCOWKMEKRk9h2iZ/rVa/BGSMfB\u002BSD4moWNrII\u002Bd7\u002B7TWim8fJtah\u002B9FYTJbpzLmQWFaiC3yRfTQQPiFmtTBuXPuobmeEdmTBL3BTuZJKvu6BO9cN88Ynp\u002BeXj9EOSLwV4G/038FXQTqPLLpTmGQkuGM0L0CkOf559B08w0ly7paYuWSoBPDM1Vvf6JWLlQDIlpAFA0oEryetu2MA98/qkIANVuylATjGxOGGkInHx8SFVx0OcKuTKvSgPI0WiXyQ8PXkPkKDVIgmTM1P6Druldk1khEy0nLM5Sd3W5B5SIDGnh0yr0lv9j\u002B6gmc9hwJRp87PFLgj4lIYS9Q1a5b/n6eTCvo1l4QdZBwzJt8uud6QFHeAsaOkxROOeQTSUO7aP1cNyFtQ7G14b/XY\u002B\u002BNYl5uHZvhcNkKdENo6zWkcjLIWf2m93kff/\u002B/HNy2dIQI0QTV0PQumn4G29xIVZNdrgA\u002B1aMpXCMrBI5rg3vXJeEcCikw8uq6w9hbYrV0qnzcs1xwPjb33lEzA0J4tkzuU8\u002B4MUckWbhsfksuAlllWkhrjnv3Is1Mdvd1FDoWa3mR9r1PYhcbB8jDIfkeuTQ\u002BGkInHx8SFVxkY43C\u002BQpKz9oy1V3jpNwDvKoLUovq6xXQFakImWk5Zvy34IyRintfCoNwewn7v6JoGaWh8IMTVPvi1YB7CksfmOTGcMLkSuoiBPZU3925xMK\u002BT\u002BUXxO3KL3P6cnJkgUSLE6yX3MpIJUciauHmovOI60VvbmErbDoC\u002B\u002BZKug3cH//lITMPbUrhAjRBNdv2NWB87/zc4tvs5AF4ku6JnctaBbcvcauU7Z0BoTBtd4jkvl9R1BQGsBzObSK1x2Gidwxd30FF\u002BHbkKrpB8/lDzNNP3ttsjeNYbwrAPZd8L8loYD7aMqjK6VNEXDKlHWvObOMXqgIHzJDCLWS8pI/aFEevVU0H6P4kKrjIyK7Kwdhc1CeUgluPNEvHt/rqW8n8A2fzcZlafpIPiamEjzLScszlJ3dbkEwcbpupwyiAMnd\u002BCVeGKzgWfBCXXYsM2kIrENwuj1rt/Hi4oy3T4Dcpwj7GqliYtqZv5UP628TreWjmSGvdEaHE3tDHohxm4RuQfaYXmEoKnRSqMbk6JhhYDcvpo8Pr3MXYAqiOSefzW/Efrv5McUnYMqI4NTKoAMEnHqMD4q6Wbr4kLDLzZV64I3YQvn1Y9BS3WTMl1VY\u002BzqC9VgTVGkDG1qPTZG9hdn3/NN5kJmQAZ88S9x11Le4GuDO46SaBtLUPJ9JUcifX48XFGW6fCpSZkpH9bkE67Nwo/TaEF3yct9Nc0ZCaO1wDyrG6u5Oovh3Ia6oBKCp0Uw41i6O3Vf/1SGJ24BpsxnvS0F6W2NWB87/zc4tvs5M9Xa9205x6YNrNiX/Cebcsb4Z\u002BowpdkBm6a/6yqfqW6s\u002BnKNcJaSSERlgyTBClc3fVoBRSt\u002BLT5u9s2DFSb4PNNbcgYOKsJJKh050ZZfvHgM66YcsZycWAzR9FB2AjnTwzlkQ9WJ8St4Oni4oxQcU2Z4wk39JtX/GuBGH8nhlP5ibsKaP2C7sPrUE4yga/GVGoZhjsUkBA/tIKD5cbb1eCDNKE7TJzuA6WoQeD\u002BApTH/wF9yqXm1h1zTvQRy9jPa2uUNONWplPis2iFrdHsH/6dIMvsCAEQ6rpNDic1I1//VSPaVr4vZmQ\u002BfW55p73Ru041mJ/XIVhiW5UbRss7QB/9MfkLqfqfncfa4RTd5NPcbkLPaQfwTz7I3uPocVDJcakt50IP00LE6z/0DEmWm4m9ETMCAT/aLKeuTju6MoXfhlWvud9M7MZFj/3IPe/hKqMtk3/A/fcNQHwIzZFPl8F0k/5/nmlldpcNgBrV8DtLoYCv1uS7slt3RjBlxesacp30ZAQO69ZAmMv/movjLpaFCBvcqqSkqrpXHsPBjAIjIRgkBa9AbvSKMzJcYHQkU79Hr3MCb9rbNArQ7lNlQFILvK18R8SdDBf\u002BK\u002Bil73ik9PyiwC6Z\u002B/LeW7\u002B1AIX4JoAEpS5QZkpeQNhNyqNem5fbjaiYmlqi9D/grqXNl4RIUwWkf9ovry6mjqkRKi0V7xvXl6eXP5h4Ephske9\u002By8Th3zTbo2IDYoAAAV4gAAAAAA=="
     },
     {
       "Path": "DockerMods/dotnet7sdk.sh",
