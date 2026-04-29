@@ -477,6 +477,13 @@
       "Uid": "9f25c573-1c3c-4a1e-8429-5f1fc69fc6d8"
     },
     {
+      "Path": "Scripts/Flow/Applications/Emby/Emby - Check file locked.js",
+      "Name": "Emby - Check file locked",
+      "Description": "Check current/active Emby sessions to see if input file is being played/used. URI and ApiKey can be set via variables or input parameters.\n/",
+      "Revision": 1,
+      "Uid": "e5170bb3-136d-4f46-a17d-51da594cb636"
+    },
+    {
       "Path": "Scripts/Flow/Applications/Lidarr/Lidarr - Manually trigger import.js",
       "Name": "Lidarr - Manually trigger import",
       "Description": "Manually tells Lidarr to rescan, run after last file in folder moved\n/",
