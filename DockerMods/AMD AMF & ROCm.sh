@@ -312,7 +312,7 @@ install_compute() {
 # ICD + libs with the system loader so OpenCL works without manual env vars.
 # ---------------------------------------------------------------------------
 apply_opencl_workaround() {
-    local rocm_path="" icd vendors_dir=""
+    local rocm_path="" icd
     if [ -d /opt/rocm ]; then
         rocm_path="/opt/rocm"
     else
@@ -325,7 +325,6 @@ apply_opencl_workaround() {
     while IFS= read -r icd; do
         [ -n "$icd" ] || continue
         ln -sf "$icd" "/etc/OpenCL/vendors/$(basename "$icd")"
-        vendors_dir="$(dirname "$icd")"
     done < <(find -L "$rocm_path/" -path '*OpenCL/vendors/*.icd' 2>/dev/null)
 
     : > "$OPENCL_LDCONF"
@@ -335,8 +334,9 @@ apply_opencl_workaround() {
     if [ -s "$OPENCL_LDCONF" ]; then ldconfig; else rm -f "$OPENCL_LDCONF"; fi
 
     cat > "$OPENCL_ENV" <<EOF
-# AMD ROCm OpenCL path workaround (AMD Radeon Software 26.12 release notes)
-export OCL_ICD_VENDORS=${vendors_dir:-/etc/OpenCL/vendors}
+# AMD ROCm OpenCL path workaround (AMD Radeon Software 26.12 release notes).
+# All ROCm ICDs are symlinked into the loader's default vendor directory below.
+export OCL_ICD_VENDORS=/etc/OpenCL/vendors
 EOF
     chmod 0644 "$OPENCL_ENV"
 }
@@ -394,10 +394,13 @@ if [ -f "$MARKER" ]; then
     INST_PROFILE="$(marker_val profile)"
     if [ "$REQUESTED" != "auto" ] && [ "$REQUESTED" != "$INST_PROFILE" ]; then
         log "Profile change '$INST_PROFILE' -> '$REQUESTED'; reinstalling."
-        if profile_wants_compute "$INST_PROFILE" && ! profile_wants_compute "$REQUESTED" \
-           && command -v amdgpu-uninstall >/dev/null 2>&1; then
+        if profile_wants_compute "$INST_PROFILE" && ! profile_wants_compute "$REQUESTED"; then
             log "Removing the previously installed ROCm compute stack..."
-            amdgpu-uninstall -y >/dev/null 2>&1 || true
+            if command -v amdgpu-uninstall >/dev/null 2>&1; then
+                amdgpu-uninstall -y >/dev/null 2>&1 || true
+            elif command -v amdgpu-install >/dev/null 2>&1; then
+                amdgpu-install -y --uninstall >/dev/null 2>&1 || true
+            fi
         fi
     else
         UPDATE=0
