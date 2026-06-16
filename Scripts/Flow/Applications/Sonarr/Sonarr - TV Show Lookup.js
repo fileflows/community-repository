@@ -7,7 +7,7 @@ import { Sonarr } from 'Shared/Sonarr';
  * Stores the Metadata inside the variable 'TVShowInfo'.
  * @author iBuSH
  * @uid 9f25c573-1c3c-4a1e-8429-5f1fc69fc6d8
- * @revision 9
+ * @revision 10
  * @param {string} URL Sonarr root URL and port (e.g., http://sonarr:8989)
  * @param {string} ApiKey API Key for Sonarr
  * @param {bool} UseFolderName Whether to use the folder name instead of the file name for the search pattern.<br>- If the folder starts with "Season", "Staffel", "Saison", or "Specials", the parent folder will be used.<br>- Best option if your downlad library is the same as your media library.<br>- If lookup returning with more then 2 episodes then it will fallback to file name search pattern.
@@ -72,12 +72,16 @@ function Script(URL, ApiKey, UseFolderName) {
  */
 function updateSeriesMetadata(series) {
     const isoLang  = LanguageHelper.GetIso2Code(series.originalLanguage?.name);
+    const seasonNumber = series.EpisodesInfo?.length ? series.EpisodesInfo[0].seasonNumber : null;
+    const episodeNumber = series.EpisodesInfo?.map(ep => ep.episodeNumber) ?? [];
 
     Object.assign(Variables, {
         'tvshow.Title': series.title,
         'tvshow.Year': series.year,
         'Sonarr.seriesId': series.id ?? null,
         'Sonarr.episodeIds': series.EpisodesInfo?.map(ep => ep.id) ?? [],
+        'Sonarr.seasonNumber': seasonNumber,
+        'Sonarr.episodeNumber': episodeNumber,
         TVShowInfo: series,
         OriginalLanguage: isoLang,
         VideoMetadata: {
