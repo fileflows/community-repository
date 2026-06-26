@@ -154,6 +154,41 @@
   ],
   "FlowScripts": [
     {
+      "Path": "Scripts/Flow/Manga/Manga-Metadata.js",
+      "Name": "Manga-Metadata",
+      "Description": "Manga-Metadata-Initial (FIXED)\nPrefers ComicInfo.xml \u003CSeries\u003E for series_title; falls back to parent folder.\nExtracts XML via stdout to avoid disk writes.\n/",
+      "Revision": 1,
+      "Uid": "8621cda6-d99e-4cf7-9587-6f6e98deb076"
+    },
+    {
+      "Path": "Scripts/Flow/Manga/Manga-Extract.js",
+      "Name": "Manga-Extract",
+      "Description": "Manga-Extract\n- Extracts CBZ into /tmp/...\n- Creates work dir\n- Sets Variables:\n- series.title\n- manga.baseTemp, manga.extractDir, manga.workDir, manga.inputCbz, manga.pageList, manga.pagesTotal\n- Adds unzip timeout to prevent zombie hangs\n/",
+      "Revision": 1,
+      "Uid": "e1f57e27-83b6-4b4f-8f9b-cfad22750cca"
+    },
+    {
+      "Path": "Scripts/Flow/Manga/Manga-Repack.js",
+      "Name": "Manga-Repack",
+      "Description": "Manga-Repack (FIXED WRAPPING)\n/",
+      "Revision": 1,
+      "Uid": "c8e18532-5bf5-4db5-b2f4-d04c7554e146"
+    },
+    {
+      "Path": "Scripts/Flow/Manga/Manga-title.js",
+      "Name": "Manga-title",
+      "Description": "Manga Chapter Renamer Helper V2.1 (MINIMAL PATCH) -\u003E sets clean_ch_name\nFix: handles titles like \u0022Vol.11 Ch.56.5 - Extra\u0022 by stripping vol/ch wrappers to get \u0022Extra\u0022\n\nOutputs:\n1 = Success\n2 = Failure\n/",
+      "Revision": 1,
+      "Uid": "a1688ec7-70a1-4f46-989c-a48cbcfb2032"
+    },
+    {
+      "Path": "Scripts/Flow/Manga/Manga-Upscaler.js",
+      "Name": "Manga-Upscaler",
+      "Description": "Manga-Upscale\nPurely: upscale \u002B recompress. No extracting, no repackaging, no delete/replace.\n\nReads Variables from Manga-Extract:\n- manga.extractDir, manga.workDir, manga.pageList\n\nFIXES:\n(4) Zombie hangs: uses timeout for each upscaler call (if \u0060timeout\u0060 exists).\n(5) 5KB/broken pages: validates outputs; if convert blocked, tries ffmpeg/cwebp; if still blocked, keeps PNG; if output tiny/invalid, fallback to original.\n\n/",
+      "Revision": 1,
+      "Uid": "e73709cb-c550-40a1-b644-beb2d8ac8300"
+    },
+    {
       "Path": "Scripts/Flow/Docker/Roop Docker Face Swap.js",
       "Name": "Roop Docker Face Swap",
       "Description": "Spins up a Docker container from the \u0027roop\u0027 image to perform a face swap on the current working file.\n/",
@@ -492,41 +527,6 @@
     }
   ],
   "FunctionScripts": [
-    {
-      "Path": "Scripts/Function/Manga/Manga-Metadata.js",
-      "Name": "Manga-Metadata",
-      "Description": "Manga-Metadata-Initial (FIXED)\nPrefers ComicInfo.xml \u003CSeries\u003E for series_title; falls back to parent folder.\nExtracts XML via stdout to avoid disk writes.\n/",
-      "Revision": 1,
-      "Uid": "8621cda6-d99e-4cf7-9587-6f6e98deb076"
-    },
-    {
-      "Path": "Scripts/Function/Manga/Manga-Extract.js",
-      "Name": "Manga-Extract",
-      "Description": "Manga-Extract\n- Extracts CBZ into /tmp/...\n- Creates work dir\n- Sets Variables:\n- series.title\n- manga.baseTemp, manga.extractDir, manga.workDir, manga.inputCbz, manga.pageList, manga.pagesTotal\n- Adds unzip timeout to prevent zombie hangs\n/",
-      "Revision": 1,
-      "Uid": "e1f57e27-83b6-4b4f-8f9b-cfad22750cca"
-    },
-    {
-      "Path": "Scripts/Function/Manga/Manga-Repack.js",
-      "Name": "Manga-Repack",
-      "Description": "Manga-Repack (FIXED WRAPPING)\n/",
-      "Revision": 1,
-      "Uid": "c8e18532-5bf5-4db5-b2f4-d04c7554e146"
-    },
-    {
-      "Path": "Scripts/Function/Manga/Manga-title.js",
-      "Name": "Manga-title",
-      "Description": "Manga Chapter Renamer Helper V2.1 (MINIMAL PATCH) -\u003E sets clean_ch_name\nFix: handles titles like \u0022Vol.11 Ch.56.5 - Extra\u0022 by stripping vol/ch wrappers to get \u0022Extra\u0022\n\nOutputs:\n1 = Success\n2 = Failure\n/",
-      "Revision": 1,
-      "Uid": "a1688ec7-70a1-4f46-989c-a48cbcfb2032"
-    },
-    {
-      "Path": "Scripts/Function/Manga/Manga-Upscaler.js",
-      "Name": "Manga-Upscaler",
-      "Description": "Manga-Upscale\nPurely: upscale \u002B recompress. No extracting, no repackaging, no delete/replace.\n\nReads Variables from Manga-Extract:\n- manga.extractDir, manga.workDir, manga.pageList\n\nFIXES:\n(4) Zombie hangs: uses timeout for each upscaler call (if \u0060timeout\u0060 exists).\n(5) 5KB/broken pages: validates outputs; if convert blocked, tries ffmpeg/cwebp; if still blocked, keeps PNG; if output tiny/invalid, fallback to original.\n\n/",
-      "Revision": 1,
-      "Uid": "e73709cb-c550-40a1-b644-beb2d8ac8300"
-    },
     {
       "Path": "Scripts/Function/File/File - Greater Than 1GB.cs",
       "Name": "File - Greater Than 1GB",
