@@ -304,7 +304,7 @@
       "Path": "Scripts/Flow/Video/Video - Upscale Anime (Video2x) [Docker].js",
       "Name": "Video - Upscale Anime (Video2x) [Docker]",
       "Description": "Upscales anime using Video2x inside a docker container. Requires TempPathHost environment variable to be set if running inside a docker container\n/",
-      "Revision": 4,
+      "Revision": 6,
       "Uid": "ebbea155-596c-4be9-93bf-24858f6b0765"
     },
     {
