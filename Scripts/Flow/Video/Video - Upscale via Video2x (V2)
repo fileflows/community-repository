@@ -1,0 +1,74 @@
+/**
+ * @description V2: Highly optimized video upscaling engine utilizing the modern Video2X Docker CLI container pipeline. Features modernized parameter flag mapping, comprehensive AI sub-model choice matrices, and native audio/video container safety patches.
+ * @author Kamba
+ * @revision 1
+ * @uid 38c69323-e29c-44f4-98b8-2d7590b1d1c6
+ * @param {int} UpscalingFactor The upscaling factor multiplier (typically 2, 3, or 4).
+ * @param {int} Processes The number of parallel processing tasks (jobs) to run concurrently.
+ * @param {('waifu2x'|'realesrgan'|'realcugan'|'realsr'|'srmd'|'anime4kcpp')} Upscaler Select which core Upscaler engine to invoke.
+ * @param {('none'|'realesrgan-plus'|'realesr-animevideov3'|'realesrgan-plus-anime')} RealEsrganModel Select 'none' if not using realesrgan.
+ * @param {('none'|'models-pro'|'models-se'|'models-nose')} RealCuganModel Select 'none' if not using realcugan.
+ * @output file was upscaled
+ */
+function Script(UpscalingFactor, Processes, Upscaler, RealEsrganModel, RealCuganModel)
+ {
+    if(Processes < 1)
+        Processes = 1;
+    if(UpscalingFactor < 1)
+        UpscalingFactor = 1;
+
+    // copy the file into temporary directory
+    let wf = Flow.CopyToTemp();
+    let shortFile =  wf.substring(wf.lastIndexOf(Flow.IsWindows ? '\\' : '/') + 1);
+    
+    // FIXED: Forced .mp4 output to prevent the FFmpeg container initialization errors on WebM files
+    let output = Flow.NewGuid() + '.mp4';
+    let tempPath = Flow.TempPathHost;
+    
+    Logger.ILog('ShortFile: ' + shortFile);
+    Logger.ILog('Output: ' + output);
+    Logger.ILog('TempPath: ' + tempPath);
+
+    // Build core execution arguments using correct native CLI structure
+    let args = [
+        'run',
+        '--rm',
+        '--privileged',
+        '--gpus', 'all',
+        '-v', tempPath + ':/host',
+        '-v', tempPath + ':/tmp',
+        'ghcr.io/k4yt3x/video2x:latest',
+        '-i', '/host/' + shortFile,
+        '-o', '/host/' + output,
+        '-p', Upscaler,              
+        '-s', '' + UpscalingFactor,  
+        '-n', '' + Processes         
+    ];
+
+    // Filter out 'none', empty strings, or null choices
+    if (Upscaler === 'realesrgan' && RealEsrganModel && RealEsrganModel !== 'none' && RealEsrganModel.trim() !== '') {
+        args.push('--realesrgan-model', RealEsrganModel);
+    } 
+    else if (Upscaler === 'realcugan' && RealCuganModel && RealCuganModel !== 'none' && RealCuganModel.trim() !== '') {
+        args.push('--realcugan-model', RealCuganModel);
+    }
+
+    let process = Flow.Execute({
+        command: 'docker',
+        argumentList: args
+    });
+
+    if(process.standardOutput)
+        Logger.ILog('Standard output: ' + process.standardOutput);
+    if(process.standardError)
+        Logger.ILog('Standard error: ' + process.standardError);
+
+    if(process.exitCode !== 0){
+        Logger.ELog('Failed processing: ' + process.exitCode);
+        return -1;
+    }
+
+    output = Flow.TempPath + '/' + output;
+    Flow.SetWorkingFile(output);
+    return 1;
+ }
