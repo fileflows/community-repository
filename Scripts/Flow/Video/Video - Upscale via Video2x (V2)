@@ -2,6 +2,7 @@
  * @description V2: Highly optimized video upscaling engine utilizing the modern Video2X Docker CLI container pipeline. Features modernized parameter flag mapping, comprehensive AI sub-model choice matrices, and native audio/video container safety patches.
  * @author Kamba
  * @revision 1
+ * @uid 38c69323-e29c-44f4-98b8-2d7590b1d1c6
  * @param {int} UpscalingFactor The upscaling factor multiplier (typically 2, 3, or 4).
  * @param {int} Processes The number of parallel processing tasks (jobs) to run concurrently.
  * @param {('waifu2x'|'realesrgan'|'realcugan'|'realsr'|'srmd'|'anime4kcpp')} Upscaler Select which core Upscaler engine to invoke.
