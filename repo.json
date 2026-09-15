@@ -161,32 +161,11 @@
       "Uid": "e35d65b5-1486-42b9-8a0c-651804adea88"
     },
     {
-      "Path": "Scripts/Flow/Folder/Folder - Copy Folder.js",
-      "Name": "Folder - Copy Folder",
-      "Description": "Copies a folder from one location to another\n/",
-      "Revision": 4,
-      "Uid": "8efa6316-8108-4c1a-8aeb-49bb1c9f8323"
-    },
-    {
       "Path": "Scripts/Flow/File/File - Blocklist sonarr or radarr.js",
       "Name": "File - Blocklist sonarr or radarr",
       "Description": "This script will search the active queue and blocklist and research.  For use alongside this strategy https://fileflows.com/docs/guides/sonarr-radarr\n/",
       "Revision": 5,
       "Uid": "8eb58ddf-f355-4442-8101-d6fd81a1b927"
-    },
-    {
-      "Path": "Scripts/Flow/File/File - Older Than.js",
-      "Name": "File - Older Than",
-      "Description": "Checks if a file is older than the specified days\n/",
-      "Revision": 5,
-      "Uid": "fbdd7b81-5112-43eb-a371-6aaf9b42977d"
-    },
-    {
-      "Path": "Scripts/Flow/File/File - Newer Than.js",
-      "Name": "File - Newer Than",
-      "Description": "Checks if a file is newer than the specified days\n/",
-      "Revision": 4,
-      "Uid": "8cdce0bf-abf9-4ed0-8d95-93db86c3fb58"
     },
     {
       "Path": "Scripts/Flow/Video/Video - Filesize bigger than calculated.js",
@@ -217,53 +196,11 @@
       "Uid": "bd6992b2-b123-4acd-a054-f6029121a415"
     },
     {
-      "Path": "Scripts/Flow/Video/Video - Bitrate greater than.js",
-      "Name": "Video - Bitrate greater than",
-      "Description": "Checks if a video\u0027s bitrate is greater than specified.\n/",
-      "Revision": 4,
-      "Uid": "c6c1a4b6-5f50-4b7d-81bd-e8d38af2b698"
-    },
-    {
-      "Path": "Scripts/Flow/Video/Video - ab-av1.js",
-      "Name": "Video - AutoCRF",
-      "Description": "Please switch to Video Encode Optimized, this script is no longer maintained\nRequired DockerMods: ab-av1, FFmpeg FileFlows Edition\n\n!! Please switch to Video Encode Optimized, this script is no longer maintained !!\n\n~~~~~~~~~~~~~~~~~ NEW ~~~~~~~~~~~~~~~~~\n!!Please remove FFmpeg Builder Video Manual from output 1, it is no longer required!!\n~~~~~~~~~~~~~~~~~ NEW ~~~~~~~~~~~~~~~~~\nThis script will always try and convert the video to the target codec by trying to calculate a CRF for a smaller file.\n\nIn the event of it not finding a suitable CRF and the codec isn\u0027t in FallBackCodecs it will do BitRate encoding automatically\n\nThis Flow Element two outputs:\n1: The video will be encoded\n2: The video is in an acceptable codec and bitrate\nYou do not need to hook up any of the FFmpeg Builder flow elements!\n\n~~~~~~~~~~~~~~~~~ NEW ~~~~~~~~~~~~~~~~~\nShould you wish to test custom parameters you can do so by using the flow element before this script (e.g. -x265-params or -qsv_device)\nGood defaults for QSV encodes that yield better results\nAbility to force all encodes to 10bit, this will very slightly improve your score\nChanged default to veryslow (QSV), this can be changed in a variable called Preset\n~~~~~~~~~~~~~~~~~ NEW ~~~~~~~~~~~~~~~~~\n\nRecommended defaults:\n    FallBackCodecs: hevc, h.264\n    MaxBitRate: 11.5 MBps for SDR and 23.5 MBps Dolby Vision\n\nAll parameters can also be overridden using Variables for example\n    TargetCodec = hevc_nvenc\n    MaxBitRate = 12\n    FallBackCodecs = hevc|h.264|mpeg4|custom\n    SVT = lookahead=64:film-grain=8\n    KeyInt = 240\n    Threads = 4\n    Preset = slow\n\nFor further help or feature requests find me in the discord\n/",
-      "Revision": 16,
-      "Uid": "d08608d8-3b50-4784-ad68-fd4ed102577c"
-    },
-    {
-      "Path": "Scripts/Flow/Video/Video - Set Original Language from MovieDB.js",
-      "Name": "Video - Set Original Language from MovieDB",
-      "Description": "Gets either TV Show Information or Movie Information from a meta flow element and updates any audio tracks with missing language codes\nwith the original language of the show/movie\nRequires the \u0022Movie Lookup\u0022 or \u0022TV Show Lookup\u0022 to be executed first to work\n/",
-      "Revision": 6,
-      "Uid": "3a3909c7-aded-45d7-8340-b27e76589b02"
-    },
-    {
       "Path": "Scripts/Flow/Video/Video - Denoise Non-Linear Means.js",
       "Name": "Video - Denoise Non-Linear Means",
       "Description": "Denoise frames using Non-Local Means algorithm.\n/",
       "Revision": 4,
       "Uid": "b4ed740e-b851-4336-b412-a63ddc64ca0b"
-    },
-    {
-      "Path": "Scripts/Flow/Video/Video - Export All Subtitles.js",
-      "Name": "Video - Export All Subtitles",
-      "Description": "Exports all subtitles from a video file\n/",
-      "Revision": 10,
-      "Uid": "fc30c661-4901-4474-8487-619a6257494b"
-    },
-    {
-      "Path": "Scripts/Flow/Video/Video - Has Audio.js",
-      "Name": "Video - Has Audio",
-      "Description": "Checks if there is an audio track on a video file\n/",
-      "Revision": 4,
-      "Uid": "c57f5849-0df1-4882-b668-62145bda1304"
-    },
-    {
-      "Path": "Scripts/Flow/Video/Video - Has 5.1 Audio.js",
-      "Name": "Video - Has 5.1 Audio",
-      "Description": "Determines if a video has a 5.1 channel track\n/",
-      "Revision": 7,
-      "Uid": "c87f9e27-6587-490b-a51e-f65e7542b891"
     },
     {
       "Path": "Scripts/Flow/Video/Video - Inject HDR10\u002B metadata.js",
@@ -287,20 +224,6 @@
       "Uid": "f5eebc75-e22d-4181-af02-5e7263e68acd"
     },
     {
-      "Path": "Scripts/Flow/Video/Video - Downscale greater than 720p.js",
-      "Name": "Video - Downscale greater than 720p",
-      "Description": "If a video\u0027s resolution is greater than 720p, this script will update the FFMPEG Builder video track with a filter to downscale the video to 720p when the FFMPEG Builder Executor runs.\n/",
-      "Revision": 4,
-      "Uid": "9191f554-ecd5-4ef4-b83b-054f2878b09f"
-    },
-    {
-      "Path": "Scripts/Flow/Video/Video - Downscale greater than 1080p.js",
-      "Name": "Video - Downscale greater than 1080p",
-      "Description": "If a video\u0027s resolution is greater than 1080p, this script will update the FFMPEG Builder video track with a filter to downscale the video to 1080p when the FFMPEG Builder Executor runs.\n/",
-      "Revision": 6,
-      "Uid": "62b01a65-b602-49cb-ac81-8583ead54ca7"
-    },
-    {
       "Path": "Scripts/Flow/Video/Video - Run ab-av1.js",
       "Name": "Video - Run ab-av1",
       "Description": "Run ab-av1 to find the best CRF of a video for a given VMAF. This is saved to Variables.AbAv1CRFValue if found.\nImportant: This script was made to be ran with the docker version of FileFlows. Results on other platforms may vary.\nIf CRF is found, it is saved to Variables.AbAv1CRFValue.\nExecutes the ab-av1 command.\n/",
@@ -308,25 +231,11 @@
       "Uid": "e31fbd4d-dc96-4ae6-9122-a9f30c102b1d"
     },
     {
-      "Path": "Scripts/Flow/Video/Video - Delete Non-Original Language Audio.js",
-      "Name": "Video - Delete Non-Original Language Audio",
-      "Description": "Checks the \u0022Movie Lookup\u0022/\u0022TV Show Lookup\u0022 information for original language, and will delete any audio tracks with languages set that do not match the original language.  Requires the \u0022Movie Lookup\u0022/\u0022TV Show Lookup\u0022 node to be executed first to work\n/",
-      "Revision": 8,
-      "Uid": "d3d80753-4c85-4202-af33-ba73e585c771"
-    },
-    {
       "Path": "Scripts/Flow/Video/Video - Audio bitrate per channel.js",
       "Name": "Video - Audio bitrate per channel",
       "Description": "Sets the bitrate for audio streams based off the number of channels - in place of \u0022Quality\u0022 options found on some audio codecs\n/",
       "Revision": 3,
       "Uid": "f25d9fc6-adfa-4c53-bf03-cc8fd6a98e9c"
-    },
-    {
-      "Path": "Scripts/Flow/Video/Video - Resolution.js",
-      "Name": "Video - Resolution",
-      "Description": "Determines a video\u0027s resolution and outputs accordingly\n/",
-      "Revision": 4,
-      "Uid": "d5962d9f-6200-4441-a0af-1c47f5ac8101"
     },
     {
       "Path": "Scripts/Flow/Video/Video - Audio Bitrate Matches.js",
@@ -341,27 +250,6 @@
       "Description": "Detects the dynamic range of a video e.g. SDR/HDR/HDR\u002BDoVi/Dovi\n/",
       "Revision": 4,
       "Uid": "d6d1bde2-0a1c-46d1-a9b2-a46d12eeffb7"
-    },
-    {
-      "Path": "Scripts/Flow/Video/Video - Has 2.0 Audio.js",
-      "Name": "Video - Has 2.0 Audio",
-      "Description": "Determines if a video has a 2.0 (stereo) channel track\n/",
-      "Revision": 5,
-      "Uid": "f9928be4-23e3-43d8-aa5f-6e0d5a8fc736"
-    },
-    {
-      "Path": "Scripts/Flow/Video/Video - Set Stream Titles.js",
-      "Name": "Video - Set Stream Titles",
-      "Description": "Updates audio and or subtitle titles to format \u0060Language / Codec / Bitrate / SampleRate\u0060 or \u0060Language / Forced / Codec\u0060\n/",
-      "Revision": 6,
-      "Uid": "2b38c39e-8536-4df8-9878-684e3f02fed8"
-    },
-    {
-      "Path": "Scripts/Flow/Video/Video - Upscale Anime (Dandere2x) [Docker].js",
-      "Name": "Video - Upscale Anime (Dandere2x) [Docker]",
-      "Description": "Upscales anime using Dandere2x inside a docker container. Requires TempPathHost environment variable to be set if running inside a docker container\n/",
-      "Revision": 4,
-      "Uid": "a688f844-988f-4541-90a6-0fc189fea1c4"
     },
     {
       "Path": "Scripts/Flow/Video/Video - Upscale Anime (Video2x) [Docker].js",
@@ -406,25 +294,11 @@
       "Uid": "8621cda6-d99e-4cf7-9587-6f6e98deb076"
     },
     {
-      "Path": "Scripts/Flow/Hardware/NVIDIA - Below Encoder Limit.js",
-      "Name": "NVIDIA - Below Encoder Limit",
-      "Description": "Checks the count of NVIDIA encodes currently processing and see if it is below a limit\n/",
-      "Revision": 4,
-      "Uid": "071ef14f-46db-4e21-b438-30ac56b37cc4"
-    },
-    {
       "Path": "Scripts/Flow/Utilities/Flow - Job Manager.js",
       "Name": "Flow - Job Manager",
       "Description": "Manage concurrent execution of a flow.\n/",
       "Revision": 1,
       "Uid": "df4df16f-510e-49b8-a941-447e4f8beff7"
-    },
-    {
-      "Path": "Scripts/Flow/Utilities/7Zip - Compress to Zip.js",
-      "Name": "7Zip - Compress to Zip",
-      "Description": "Uses 7Zip to zip files\n/",
-      "Revision": 5,
-      "Uid": "e45d1199-8528-4031-ad52-66c4f0fb5f8e"
     },
     {
       "Path": "Scripts/Flow/Applications/Radarr/Radarr - Refresh.js",
