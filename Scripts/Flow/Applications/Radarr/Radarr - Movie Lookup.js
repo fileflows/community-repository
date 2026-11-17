@@ -15,6 +15,7 @@ import { Radarr } from 'Shared/Radarr';
  * Sets: movie.Title, movie.Year, Radarr.movieId, MovieInfo, OriginalLanguage, VideoMetadata, movie.PosterUrl.
  * @author iBuSH
  * @revision 10
+ * @version 2.0.0
  * @param {string} URL Radarr root URL and port (e.g., http://radarr:1234)
  * @param {string} ApiKey API Key for Radarr
  * @output Movie found

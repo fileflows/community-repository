@@ -15,6 +15,7 @@ import { Sonarr } from 'Shared/Sonarr';
  * Sets: tvshow.Title, tvshow.Year, Sonarr.seriesId, Sonarr.episodeIds, Sonarr.seasonNumber, Sonarr.episodeNumber, TVShowInfo, OriginalLanguage, VideoMetadata, tvshow.PosterUrl.
  * @author iBuSH
  * @revision 11
+ * @version 2.0.0
  * @param {string} URL Sonarr root URL and port (e.g., http://sonarr:8989)
  * @param {string} ApiKey API Key for Sonarr
  * @output TV Show found

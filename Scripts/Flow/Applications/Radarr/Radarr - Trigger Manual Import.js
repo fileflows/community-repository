@@ -12,6 +12,7 @@ import { Radarr } from 'Shared/Radarr';
  * - Falls back to a downloadedMoviesScan when no movie is known or the Manual Import can't be started.
  * @author iBuSH
  * @revision 9
+ * @version 2.0.0
  * @param {string} URL Radarr root URL and port (e.g. http://radarr:7878).
  * @param {string} ApiKey Radarr API Key.
  * @param {string} ImportPath The output path for import triggering (default Working File).

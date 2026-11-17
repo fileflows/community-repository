@@ -12,6 +12,7 @@ import { Sonarr } from 'Shared/Sonarr';
  * - Falls back to a downloadedEpisodesScan when no series/episodes are known or the Manual Import can't be started.
  * @author iBuSH
  * @revision 8
+ * @version 2.0.0
  * @param {string} URL Sonarr root URL and port (e.g. http://sonarr:8989).
  * @param {string} ApiKey Sonarr API Key.
  * @param {string} ImportPath The output path for import triggering (default Working File).
